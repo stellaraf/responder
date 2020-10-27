@@ -1,0 +1,18 @@
+[flake8]
+max-line-length=88
+count=True
+show-source=False
+statistics=True
+exclude=.git, __pycache__
+filename=*.py
+per-file-ignores=
+    # Pydantic/typing & line length ignores for easier model composition.
+    responder/models/*.py:N805,E0213,R0903,E501,C0301
+    # Don't warn about unused imports & docstring formatting on module files.
+    responder/__init__.py:F401,D205,D400
+    responder/*/__init__.py:F401,D205,D400
+ignore=W503,C0330,R504,D202,PIE781,S404
+select=B, BLK, C, D, E, F, I, II, N, P, PIE, S, R, W
+disable-noqa=False
+hang-closing=False
+max-complexity=10

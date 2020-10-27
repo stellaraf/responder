@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  lb:
+    image: yyyar/gobetween
+    restart: unless-stopped
+    ports:
+      - '80:80'
+    volumes:
+      - ./gobetween.toml:/etc/gobetween/conf/gobetween.toml
+    networks:
+      default:
+        ipv4_address: 198.18.1.100
+        ipv6_address: fc07:1::a0
+  api1:
+    restart: unless-stopped
+    labels:
+      - responder
+    build:
+      context: .
+      dockerfile: './api.dockerfile'
+    environment:
+      - listen_port=8001
+    ports:
+      - '8001:8001'
+    networks:
+      default:
+        ipv4_address: 198.18.1.101
+        ipv6_address: fc07:1::a1
+  api2:
+    restart: unless-stopped
+    labels:
+      - responder
+    build:
+      context: .
+      dockerfile: './api.dockerfile'
+    environment:
+      - listen_port=8002
+    ports:
+      - '8002:8002'
+    networks:
+      default:
+        ipv4_address: 198.18.1.102
+        ipv6_address: fc07:1::a2
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 198.18.1.0/24
+        - subnet: fc07:1::/64
